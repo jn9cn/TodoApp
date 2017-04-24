@@ -1,11 +1,8 @@
 var todos = [];
-
-//saving var
-
 var todoList = document.getElementById('todo-list');
 var todoInput = document.getElementById('todo-input');
 
-//writing fx
+// Task entry; text changes on button click
 
 function addTodo() {
 
@@ -15,8 +12,6 @@ function addTodo() {
 		todos.push(todoText); // push input value to todos array
 
 		displayNewTodo(); // fx to add new todos
-
-		console.log("Hey it's working!");
 	}
 
 	var buttonText = document.getElementById('button-changing');
@@ -30,91 +25,88 @@ function addTodo() {
 		}
 }
 
-//Add fx
+// Task entered is listed
 
 function displayNewTodo() {
-	var todoIndex = (todos.length-1); //define var at last index of array
+	var todoIndex = (todos.length-1);
 	var todo = todos[todoIndex];
 
-	var newTodo = document.createElement('li'); //create new elem as brand new list item
-	newTodo.id = todoIndex; //assign new id (its index) with each new list item
-	newTodo.innerHTML = todo; //last thing in array, put it in b/n <ul> </ul> in .html file; "innerHTML Removes all of element's children, parses the content string and assigns the resulting nodes as children of the element."
+	var newTodo = document.createElement('li');
+	newTodo.id = todoIndex;
+	newTodo.innerHTML = todo;
 
-	todoList.appendChild(newTodo); //nest newTodo in todoList; ".appendChild() The returned value is the appended child.""
+	todoList.appendChild(newTodo);
 
-	appendOptionsButtons(todoIndex, newTodo); //buttons fx
+	appendOptionsButtons(todoIndex, newTodo);
 }
 
-//Delete fx
+// Delete task from list
 
 function removeTodo(index) {
-	todos.splice(index,1); //cuts element directly off array, starts at index, deletes 1 elem
+	todos.splice(index,1);
 
-	var toDoToRemove = document.getElementById('' + index + ''); //storing elem we want to remove
+	var toDoToRemove = document.getElementById('' + index + '');
 
-	todoList.removeChild(toDoToRemove); //removing the elem
+	todoList.removeChild(toDoToRemove);
 
 }
 
-//Edit fx
+// Edit task description in list
 
 function editInputField(index) {
-	var toDoToChange = document.getElementById('' + index + ''); // takes argument as number and store in var
+	var toDoToChange = document.getElementById('' + index + '');
 
-	var editInput = document.createElement('input'); // Create a brand new input element
+	var editInput = document.createElement('input');
 
-	editInput.type = 'text'; // adds type = "text"
-	editInput.id = 'edit'; // adds id = "edit"
-	editInput.className = 'edit-input'; // adds a class = "edit-input"
-	editInput.placeholder = 'Edit the todo'; // placeholder text
+	editInput.type = 'text';
+	editInput.id = 'edit';
+	editInput.className = 'edit-input';
+	editInput.placeholder = 'Edit the todo';
 
-	var editButton = document.createElement('button'); // create button elem
-	editButton.innerHTML = "Update Todo"; // inside button, "update todo"
+	var editButton = document.createElement('button');
+	editButton.innerHTML = "Update Todo";
 
-	editButton.onclick = function() { // create onclick atrribute
+	editButton.onclick = function() {
 		updateTodo(index);
-		console.log("working!");
 	}
 
 	toDoToChange.appendChild(editInput);
 	toDoToChange.appendChild(editButton);
 }
 
-//Update fx
+// Update edited task decription in list
 
 function updateTodo(index) {
 	var editInput = document.getElementById('edit', '' + index + '');
 	var updatedTodo = editInput.value;
 
 	if (updatedTodo !== "") {
-		todos[index] = updatedTodo; // replacing todo at the index with updated todo, replacing todo in array
+		todos[index] = updatedTodo;
 
 		var todo = document.getElementById('' + index + '');
 
-		todo.innerHTML = updatedTodo; // replacing todo in html
-		appendOptionsButtons(index,todo); // update button
-
-		console.log("working too!");
+		todo.innerHTML = updatedTodo;
+		appendOptionsButtons(index,todo);
 	}
 
 	
 }
 
-//Buttons
+// Create edit and delete button functions; prevent duplicate "Update Todo" buttons & inputs
 
 function appendOptionsButtons(index,todo) {
-	var deleteButton = document.createElement('button'); // create a delete button
-	deleteButton.innerHTML = 'X'; // text on delete button
+	var deleteButton = document.createElement('button');
+	deleteButton.innerHTML = 'X';
 	deleteButton.onclick = function() {
 		removeTodo(index);		
 	}
 
-	var editButton = document.createElement('button'); // create edit button
+	var editButton = document.createElement('button');
 	editButton.innerHTML = 'edit';
 	editButton.id = 'edit-button'
 	editButton.onclick = function() {
 		editInputField(index);
-		document.getElementById('edit-button').disabled = 'true'; // disables button clicks after 1st click; prevents multiple edit buttons and input boxes from populating the list item 
+		document.getElementById('edit-button').disabled = 'true';
 	}
 
 	todo.appendChild(deleteButton);
